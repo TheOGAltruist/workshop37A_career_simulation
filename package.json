@@ -1,4 +1,6 @@
 {
+  "name": "career-simulation",
+  "version": "1.0.0",
   "devDependencies": {
     "nodemon": "^3.1.7",
     "prisma": "^6.0.1"
@@ -13,5 +15,12 @@
   },
   "prisma": {
     "seed": "node prisma/seed.js"
-  }
+  },
+  "scripts": {
+    "start:dev": "nodemon api/index.js"
+  },
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
