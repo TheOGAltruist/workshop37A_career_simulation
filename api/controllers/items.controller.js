@@ -1,5 +1,6 @@
 const prisma = require("../../prisma")
 
+//Function to get all items
 const getAllItems = async (req, res, next) => {
     try {
         const items = await prisma.item.findMany({
@@ -17,13 +18,21 @@ const getAllItems = async (req, res, next) => {
     }
 };
 
+// Function to get a single item
 const getSingleItem = async (req, res, next) => {
     try {
         const id = +req.params.itemId;
         const item = await prisma.item.findUnique({ 
             where: { 
                 id: id
-            } 
+            },
+            include: {
+                reviews: {
+                    include: {
+                        comments: true,
+                    },
+                }
+            },
         });
 
         if (!item) {
@@ -40,6 +49,7 @@ const getSingleItem = async (req, res, next) => {
     }
 }
 
+//Function to get reviews of an item
 const getItemReviews = async (req, res, next) => {
     try {
         const id = +req.params.itemId;
@@ -66,7 +76,8 @@ const getItemReviews = async (req, res, next) => {
     }
 }
 
-const getItemReview = async (req, res, next) => {
+//Function to get a specific review of an item
+const getItemSingleReview = async (req, res, next) => {
     try {
         const itemId = +req.params.itemId;
         const reviewId = +req.params.reviewId
@@ -97,9 +108,47 @@ const getItemReview = async (req, res, next) => {
     }
 }
 
+//Function to post a review for an item (Protected)
+const postItemReview = async (req, res, next) => {
+    try {
+        const result = await prisma.review.create({
+            data: {
+                text: req.body.text,
+                rating: req.body.rating,
+                item_id: req.params.itemId,
+                user_id: req.user.id
+            },
+        });
+
+        res.status(201).json(result)
+    } catch (error) {
+        next(error)
+    }
+}
+
+//Function to post a comment on an existing review (Protected)
+const postItemReviewComment = async (req, res, next) => {
+    try {
+        const result = await prisma.comment.create({
+            data: {
+                text: req.body.text,
+                item_id: req.params.itemId,
+                user_id: req.user.id,
+                review_id: req.params.reviewId
+            },
+        });
+
+        res.status(201).json(result)
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = {
     getAllItems,
     getSingleItem,
     getItemReviews,
-    getItemReview
+    getItemSingleReview,
+    postItemReview,
+    postItemReviewComment,
 }
