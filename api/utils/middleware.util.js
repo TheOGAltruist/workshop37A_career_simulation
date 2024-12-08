@@ -23,7 +23,7 @@ const findUserWithToken = async (token) => {
         id = payload.id
         issuer = payload.iss
     } catch (err) {
-        const error = new Error("Unauthorized. Expired Token")
+        const error = new Error(`Unauthorized. ${err.message}`)
         error.statusCode = 401
         throw error
     }
