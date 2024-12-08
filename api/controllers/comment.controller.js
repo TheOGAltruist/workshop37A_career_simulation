@@ -3,13 +3,15 @@ const prisma = require("../../prisma")
 // Get my reviews
 const myComments = async (req, res, next) => {
     try {
-        const comments = await prisma.review.findMany({
+        const comments = await prisma.comment.findMany({
             where: {
                 user_id: req.user.id
             },
             include: {
                 item: {
-                    review: true
+                    include: {
+                        reviews: true
+                    }
                 }
             }
         });
