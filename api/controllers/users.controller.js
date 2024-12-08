@@ -58,8 +58,76 @@ const changeComment = async (req, res, next) => {
     }
 }
 
+//Delete self comment (Protected)
+const deleteComment = async (req, res, next) => {
+    if (req.user.id === +req.params.userId) {
+        try {
+            const response = await prisma.comment.delete({
+                where: {
+                    id: +req.params.commentId,
+                    user_id: req.user.id
+                }
+            })
+    
+            res.status(204).send()
+        } catch (error) {
+            if (error.code == "P2025") {
+                next({
+                    statusCode: 404,
+                    message: error.meta?.cause
+                })
+            } else {
+                next(error)
+            }
+            
+            
+        }
+    } else {
+        next({
+            statusCode: 403,
+            message: "Forbidden"
+        })
+    }
+
+}
+
+//Delete self review (Protected)
+const deleteReview = async (req, res, next) => {
+    console.log("Testing")
+    if (req.user.id === +req.params.userId) {
+        try {
+            const response = await prisma.review.delete({
+                where: {
+                    id: +req.params.reviewId,
+                    user_id: req.user.id
+                }
+            })
+            
+            res.status(204).send()
+        } catch (error) {
+            
+            if (error.code == "P2025") {
+                next({
+                    statusCode: 404,
+                    message: error.meta?.cause
+                })
+            } else {
+                next(error)
+            }
+        }
+    } else {
+        next({
+            statusCode: 403,
+            message: "Forbidden"
+        })
+    }
+
+}
+
 module.exports = {
     allUsers,
     changeReview,
     changeComment,
+    deleteComment,
+    deleteReview,
 }
