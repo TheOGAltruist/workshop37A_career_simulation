@@ -93,7 +93,6 @@ const deleteComment = async (req, res, next) => {
 
 //Delete self review (Protected)
 const deleteReview = async (req, res, next) => {
-    console.log("Testing")
     if (req.user.id === +req.params.userId) {
         try {
             const response = await prisma.review.delete({
