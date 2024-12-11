@@ -115,14 +115,21 @@ const postItemReview = async (req, res, next) => {
             data: {
                 text: req.body.text,
                 rating: req.body.rating,
-                item_id: req.params.itemId,
+                item_id: +req.params.itemId,
                 user_id: req.user.id
             },
         });
 
         res.status(201).json(result)
     } catch (error) {
-        next(error)
+        if (error.code == "P2002") {
+            next({
+                statusCode: 409,
+                message: "Cannot post more than 1 review"
+            })
+        } else {
+            next(error)   
+        }
     }
 }
 
@@ -132,15 +139,22 @@ const postItemReviewComment = async (req, res, next) => {
         const result = await prisma.comment.create({
             data: {
                 text: req.body.text,
-                item_id: req.params.itemId,
+                item_id: +req.params.itemId,
                 user_id: req.user.id,
-                review_id: req.params.reviewId
+                review_id: +req.params.reviewId
             },
         });
 
         res.status(201).json(result)
     } catch (error) {
-        next(error)
+        if (error.code == "P2002") {
+            next({
+                statusCode: 409,
+                message: "Cannot post more than 1 review"
+            })
+        } else {
+            next(error)   
+        }
     }
 }
 
