@@ -9,7 +9,10 @@ const isLoggedIn = async (req, res, next) => {
         req.user = await findUserWithToken(receivedToken);
         next();
     } catch (error) {
-        next(error)
+        next({
+            statusCode: 401,
+            message: "Unauthorized"
+        })
     }
 }
 
@@ -17,7 +20,7 @@ const isLoggedIn = async (req, res, next) => {
 const findUserWithToken = async (token) => {
     let id;
     let issuer;
-
+    
     try {
         const payload = await jwt.verify(token, process.env.JWT);
         id = payload.id
