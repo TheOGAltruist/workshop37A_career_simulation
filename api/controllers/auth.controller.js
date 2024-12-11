@@ -45,13 +45,17 @@ const register = async (req, res, next) => {
             }
         })
 
+        const token = await jwt.sign({ id: response.id, username: response.username, iss: "workshop37A" }, process.env.JWT, { expiresIn: '1h' })
         res.json({
             Id: response.id,
             Name: response.name,
-            Username: response.username
+            Username: response.username,
+            token: token,
+            token_type: "Bearer"
         })
     } catch (error) {
         next({
+            statusCode: 409,
             message: "Username is not unique. Please choose another username and try again!"
         })
     }
