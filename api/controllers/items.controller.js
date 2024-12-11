@@ -125,7 +125,7 @@ const postItemReview = async (req, res, next) => {
         if (error.code == "P2002") {
             next({
                 statusCode: 409,
-                message: "Cannot post more than 1 review"
+                message: "Only 1 review per user allowed."
             })
         } else {
             next(error)   
@@ -150,7 +150,7 @@ const postItemReviewComment = async (req, res, next) => {
         if (error.code == "P2002") {
             next({
                 statusCode: 409,
-                message: "Cannot post more than 1 review"
+                message: "Only 1 comment per user per review allowed."
             })
         } else {
             next(error)   
