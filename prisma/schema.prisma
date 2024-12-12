@@ -14,41 +14,48 @@ datasource db {
 }
 
 model User {
- id Int @id @default(autoincrement())
+ id String @id @default(uuid())
  name String
  password String
  username String @unique
+ email String @unique
  reviews Review[]
  comments Comment[]
 }
 
 model Item {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   name String @unique
+  description String
+  category String
+  price Float
+  imageUrl String
   reviews Review[]
   comments Comment[]
 }
 
 model Review {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   text String
   rating Float
+  created_at DateTime @default(now())
   item Item @relation(fields: [item_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  item_id Int
+  item_id String
   user User @relation(fields: [user_id], references: [id], onDelete: SetDefault, onUpdate: Cascade)
-  user_id Int @default(12345)
+  user_id String @default("12345")
   comments Comment[]
   @@unique([user_id, item_id])
 }
 
 model Comment {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   text String
+  created_at DateTime @default(now())
   item Item @relation(fields: [item_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  item_id Int
+  item_id String
   user User @relation(fields: [user_id], references: [id], onDelete: SetDefault, onUpdate: Cascade)
-  user_id Int @default(12345)
+  user_id String @default("12345")
   review Review @relation(fields: [review_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  review_id Int
+  review_id String
   @@unique([user_id, review_id])
 }
