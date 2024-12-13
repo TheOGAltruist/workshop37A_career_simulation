@@ -21,10 +21,9 @@ const getAllItems = async (req, res, next) => {
 // Function to get a single item
 const getSingleItem = async (req, res, next) => {
     try {
-        const id = +req.params.itemId;
         const item = await prisma.item.findUnique({ 
             where: { 
-                id: id
+                id: req.params.itemId
             },
             include: {
                 reviews: {
@@ -52,10 +51,9 @@ const getSingleItem = async (req, res, next) => {
 //Function to get reviews of an item
 const getItemReviews = async (req, res, next) => {
     try {
-        const id = +req.params.itemId;
         const item = await prisma.item.findUnique({ 
             where: { 
-                id: id
+                id: req.params.itemId
             },
             include: {
                 reviews:true
@@ -79,16 +77,14 @@ const getItemReviews = async (req, res, next) => {
 //Function to get a specific review of an item
 const getItemSingleReview = async (req, res, next) => {
     try {
-        const itemId = +req.params.itemId;
-        const reviewId = +req.params.reviewId
         const item = await prisma.item.findUnique({ 
             where: { 
-                id: itemId
+                id: req.params.itemId
             },
             include: {
                 reviews:{
                     where: {
-                        id: reviewId
+                        id: req.params.reviewId
                     }
                 }
             }
@@ -115,7 +111,7 @@ const postItemReview = async (req, res, next) => {
             data: {
                 text: req.body.text,
                 rating: req.body.rating,
-                item_id: +req.params.itemId,
+                item_id: req.params.itemId,
                 user_id: req.user.id
             },
         });
@@ -139,9 +135,9 @@ const postItemReviewComment = async (req, res, next) => {
         const result = await prisma.comment.create({
             data: {
                 text: req.body.text,
-                item_id: +req.params.itemId,
+                item_id: req.params.itemId,
                 user_id: req.user.id,
-                review_id: +req.params.reviewId
+                review_id: req.params.reviewId
             },
         });
 
