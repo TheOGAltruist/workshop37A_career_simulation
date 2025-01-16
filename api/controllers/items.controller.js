@@ -40,7 +40,7 @@ const getSingleItem = async (req, res, next) => {
                 message: `Could not find item with id ${id}.`,
             });
         }
-
+        console.log(item.reviews)
         res.json(item);
         
     } catch (error) {
