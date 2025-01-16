@@ -20,7 +20,7 @@
   "scripts": {
     "start:dev": "nodemon api/app.js",
     "start": "node api/app.js",
-    "vercel-build": "echo hello"
+    "build": "echo hello"
   },
   "description": "",
   "keywords": [],
