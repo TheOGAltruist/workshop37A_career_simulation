@@ -18,7 +18,8 @@
     "seed": "node prisma/seed.js"
   },
   "scripts": {
-    "start:dev": "nodemon api/index.js"
+    "start:dev": "nodemon app.js",
+    "start": "node app.js"
   },
   "description": "",
   "keywords": [],

@@ -28,3 +28,5 @@ app.use((err, req, res, next) => {
         message
     });
 });
+
+module.exports = app;
