@@ -18,8 +18,9 @@
     "seed": "node prisma/seed.js"
   },
   "scripts": {
-    "start:dev": "nodemon app.js",
-    "start": "node app.js"
+    "start:dev": "nodemon api/app.js",
+    "start": "node api/app.js",
+    "vercel-build": "echo hello"
   },
   "description": "",
   "keywords": [],
